@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		30C6CA081E71994300556893 /* WARScoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30C6CA071E71994300556893 /* WARScoreManager.swift */; };
 		5D26AFAC1E70FAFA006A048B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D26AFAB1E70FAFA006A048B /* AppDelegate.swift */; };
 		5D26AFBC1E70FAFA006A048B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5D26AFBA1E70FAFA006A048B /* LaunchScreen.storyboard */; };
 		5D26AFC71E70FAFA006A048B /* WarcraftTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D26AFC61E70FAFA006A048B /* WarcraftTests.swift */; };
@@ -36,6 +37,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		30C6CA071E71994300556893 /* WARScoreManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WARScoreManager.swift; sourceTree = "<group>"; };
 		5D26AFA81E70FAFA006A048B /* Warcraft.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Warcraft.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5D26AFAB1E70FAFA006A048B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5D26AFBB1E70FAFA006A048B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -151,6 +153,7 @@
 		5D26AFE11E70FF29006A048B /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				30C6CA071E71994300556893 /* WARScoreManager.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -336,6 +339,7 @@
 				5D26AFEC1E7109C8006A048B /* WARGameViewController.swift in Sources */,
 				5D26AFF41E714205006A048B /* WARPlaneSpriteNode.swift in Sources */,
 				5D26AFAC1E70FAFA006A048B /* AppDelegate.swift in Sources */,
+				30C6CA081E71994300556893 /* WARScoreManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -576,6 +580,7 @@
 				5D26AFD81E70FAFA006A048B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		5D26AFD91E70FAFA006A048B /* Build configuration list for PBXNativeTarget "WarcraftTests" */ = {
 			isa = XCConfigurationList;
@@ -584,6 +589,7 @@
 				5D26AFDB1E70FAFA006A048B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		5D26AFDC1E70FAFA006A048B /* Build configuration list for PBXNativeTarget "WarcraftUITests" */ = {
 			isa = XCConfigurationList;
@@ -592,6 +598,7 @@
 				5D26AFDE1E70FAFA006A048B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

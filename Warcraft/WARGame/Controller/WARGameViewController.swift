@@ -20,7 +20,10 @@ class WARGameViewController: UIViewController, SKPhysicsContactDelegate {
     let _playerNode = SKSpriteNode(imageNamed: "plane2")
     /// 子弹纹理，一次加载多次使用
     let _bulletsTexture = SKTexture(imageNamed: "bulltes")
+    /// 敌机纹理
     let _enemysTexture = SKTexture(image: #imageLiteral(resourceName: "plane3"))
+    /// 分数标签
+    let _scoreLabel = SKLabelNode(text: "0")
     
     /// 缓存触摸开始的点
     var _touchBeganPoint = CGPoint.zero
@@ -36,6 +39,8 @@ class WARGameViewController: UIViewController, SKPhysicsContactDelegate {
     let EnemyNodeName = "EnemyNode"
     let BulletNodeName = "BulletNode"
     
+    /// 每分钟发射多少发炮弹
+    var BulletsShootPM: Double = 500
     
     
     override func viewDidLoad() {
@@ -62,42 +67,62 @@ class WARGameViewController: UIViewController, SKPhysicsContactDelegate {
         _gameView.showsFPS = true
         _gameView.showsNodeCount = true
         
+        //  玩家飞机
         _playerNode.position = CGPoint(x: _gameScene.size.width/2, y: _playerSize.height/2)
         _playerBeganPoint = _playerNode.position
         _playerNode.size = _playerSize
         _gameScene.addChild(_playerNode)
+        
+        //  分数
+        _scoreLabel.fontSize = 20
+        _scoreLabel.position = CGPoint(x: 100, y: 40)
+        _scoreLabel.horizontalAlignmentMode = .left
+        _gameScene.addChild(_scoreLabel)
     }
     
     /// 发射子弹
     fileprivate func _shootBullets() {
         let creatBullet = SKAction.run {
-            self._creatBullet()
+            //  每1000分 加一个子弹发射器
+            let count = WARScoreManager.sharedManager().currentScore/1000+1
+            self._creatBullet(count: count)
         }
-        let waiteShoot = SKAction.wait(forDuration: 0.25)
+        
+        let waiteShoot = SKAction.wait(forDuration: 60/BulletsShootPM)
         _gameScene.run(SKAction.repeatForever(SKAction.sequence([creatBullet, waiteShoot])))
 
     }
     
     /// 生成子弹
-    fileprivate func _creatBullet() {
-        let bulletsNode = SKSpriteNode(texture: _bulletsTexture)
-        bulletsNode.position = CGPoint(x: _playerNode.position.x, y: _playerNode.position.y + _playerNode.size.height/2)
-        bulletsNode.name = BulletNodeName
+    fileprivate func _creatBullet(count: Int) {
+        var bulletsCount = count
         
-        //  物理属性
-        bulletsNode.physicsBody = SKPhysicsBody(rectangleOf: bulletsNode.size)
-        bulletsNode.physicsBody?.categoryBitMask = BulletsBitMask
-        bulletsNode.physicsBody?.collisionBitMask = EnemyBitMask
-        bulletsNode.physicsBody?.contactTestBitMask = EnemyBitMask
-        
-        _gameScene.addChild(bulletsNode)
-        
-        //  向上移动
-        let actionMove = SKAction.moveBy(x: 0, y: _gameScene.size.height, duration: 1)
-        let actionDone = SKAction.run {
-            bulletsNode.removeFromParent()
+        if count>5 {
+            bulletsCount = 5
         }
-        bulletsNode.run(SKAction.sequence([actionMove, actionDone]))
+        let padding:CGFloat = 2.5*CGFloat(bulletsCount-1)
+        
+        for index in 1...bulletsCount {
+            let bulletsNode = SKSpriteNode(texture: _bulletsTexture)
+            bulletsNode.position = CGPoint(x: _playerNode.position.x - padding + CGFloat(index-1) * 5,
+                                           y: _playerNode.position.y + _playerNode.size.height/2)
+            bulletsNode.name = BulletNodeName
+            
+            //  物理属性
+            bulletsNode.physicsBody = SKPhysicsBody(rectangleOf: bulletsNode.size)
+            bulletsNode.physicsBody?.categoryBitMask = BulletsBitMask
+            bulletsNode.physicsBody?.collisionBitMask = EnemyBitMask
+            bulletsNode.physicsBody?.contactTestBitMask = EnemyBitMask
+            
+            _gameScene.addChild(bulletsNode)
+            
+            //  向上移动
+            let actionMove = SKAction.moveBy(x: 0, y: _gameScene.size.height, duration: 1)
+            let actionDone = SKAction.run {
+                bulletsNode.removeFromParent()
+            }
+            bulletsNode.run(SKAction.sequence([actionMove, actionDone]))
+        }
     }
     
     /// 放置敌机
@@ -105,7 +130,7 @@ class WARGameViewController: UIViewController, SKPhysicsContactDelegate {
         let creatEnemy = SKAction.run {
             self._creatEnemy()
         }
-        let waitePut = SKAction.wait(forDuration: 3)
+        let waitePut = SKAction.wait(forDuration: 2)
         _gameScene.run(SKAction.repeatForever(SKAction.sequence([creatEnemy, waitePut])))
     }
     
@@ -177,6 +202,7 @@ class WARGameViewController: UIViewController, SKPhysicsContactDelegate {
     func updateEnemyAfterContact(body: SKPhysicsBody) {
         if body.categoryBitMask == EnemyBitMask, let enemyNode: WARPlaneSpriteNode = body.node as? WARPlaneSpriteNode {
             enemyNode.subBlood()
+            _scoreLabel.text = "\(WARScoreManager.sharedManager().currentScore)"
         }
     }
     

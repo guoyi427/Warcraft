@@ -26,6 +26,7 @@ class WARPlaneSpriteNode: SKSpriteNode {
     func subBlood() {
         currentBlood = currentBlood - 1
         if currentBlood <= 0 {
+            WARScoreManager.sharedManager().addScore(score: 100)
             removeFromParent()
         }
     }
