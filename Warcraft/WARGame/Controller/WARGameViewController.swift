@@ -40,7 +40,10 @@ class WARGameViewController: UIViewController, SKPhysicsContactDelegate {
     let BulletNodeName = "BulletNode"
     
     /// 每分钟发射多少发炮弹
-    var BulletsShootPM: Double = 500
+    var BulletsShootPM: Double = 300
+    /// 累计出现的敌机数量
+    var _enemyAccumulativeCount:Int = 0
+    
     
     
     override func viewDidLoad() {
@@ -59,6 +62,7 @@ class WARGameViewController: UIViewController, SKPhysicsContactDelegate {
         _gameView = view as! SKView
         
         _gameScene.backgroundColor = SKColor.black
+        
         //  物理世界
         _gameScene.physicsWorld.contactDelegate = self
         _gameScene.physicsWorld.gravity = CGVector(dx: 0, dy: 0)
@@ -128,6 +132,7 @@ class WARGameViewController: UIViewController, SKPhysicsContactDelegate {
     /// 放置敌机
     fileprivate func _putEnemys() {
         let creatEnemy = SKAction.run {
+            self._enemyAccumulativeCount += 1
             self._creatEnemy()
         }
         let waitePut = SKAction.wait(forDuration: 2)
@@ -136,8 +141,8 @@ class WARGameViewController: UIViewController, SKPhysicsContactDelegate {
     
     /// 创建敌机
     fileprivate func _creatEnemy() {
-        
-        let enemyNode = WARPlaneSpriteNode(blood: 5, texture: _enemysTexture)//SKSpriteNode(texture: _enemysTexture)
+        let blood = 5 * (_enemyAccumulativeCount/10+1)
+        let enemyNode = WARPlaneSpriteNode(blood: blood, texture: _enemysTexture)//SKSpriteNode(texture: _enemysTexture)
         //  随机位置
         let x_position = arc4random()%UInt32(_gameScene.size.width-enemyNode.size.width) + UInt32(enemyNode.size.width/2)
         enemyNode.position = CGPoint(x: CGFloat(x_position), y: _gameScene.size.height-enemyNode.size.height)
