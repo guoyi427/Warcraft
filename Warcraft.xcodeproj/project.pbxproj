@@ -7,13 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3036E5711E743931005E743F /* WARPlayerPlaneNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3036E5701E743931005E743F /* WARPlayerPlaneNode.swift */; };
 		30C6CA081E71994300556893 /* WARScoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30C6CA071E71994300556893 /* WARScoreManager.swift */; };
 		5D26AFAC1E70FAFA006A048B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D26AFAB1E70FAFA006A048B /* AppDelegate.swift */; };
 		5D26AFBC1E70FAFA006A048B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5D26AFBA1E70FAFA006A048B /* LaunchScreen.storyboard */; };
 		5D26AFC71E70FAFA006A048B /* WarcraftTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D26AFC61E70FAFA006A048B /* WarcraftTests.swift */; };
 		5D26AFD21E70FAFA006A048B /* WarcraftUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D26AFD11E70FAFA006A048B /* WarcraftUITests.swift */; };
 		5D26AFE81E70FF5D006A048B /* WARMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D26AFE71E70FF5D006A048B /* WARMenuViewController.swift */; };
-		5D26AFEA1E71011A006A048B /* MyActions.sks in Resources */ = {isa = PBXBuildFile; fileRef = 5D26AFE91E71011A006A048B /* MyActions.sks */; };
 		5D26AFEC1E7109C8006A048B /* WARGameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D26AFEB1E7109C8006A048B /* WARGameViewController.swift */; };
 		5D26AFF21E712B7E006A048B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5D26AFF11E712B7E006A048B /* Assets.xcassets */; };
 		5D26AFF41E714205006A048B /* WARPlaneSpriteNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D26AFF31E714205006A048B /* WARPlaneSpriteNode.swift */; };
@@ -37,6 +37,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3036E5701E743931005E743F /* WARPlayerPlaneNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WARPlayerPlaneNode.swift; sourceTree = "<group>"; };
 		30C6CA071E71994300556893 /* WARScoreManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WARScoreManager.swift; sourceTree = "<group>"; };
 		5D26AFA81E70FAFA006A048B /* Warcraft.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Warcraft.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5D26AFAB1E70FAFA006A048B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -49,7 +50,6 @@
 		5D26AFD11E70FAFA006A048B /* WarcraftUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WarcraftUITests.swift; sourceTree = "<group>"; };
 		5D26AFD31E70FAFA006A048B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5D26AFE71E70FF5D006A048B /* WARMenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WARMenuViewController.swift; sourceTree = "<group>"; };
-		5D26AFE91E71011A006A048B /* MyActions.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = MyActions.sks; sourceTree = "<group>"; };
 		5D26AFEB1E7109C8006A048B /* WARGameViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WARGameViewController.swift; sourceTree = "<group>"; };
 		5D26AFF11E712B7E006A048B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		5D26AFF31E714205006A048B /* WARPlaneSpriteNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WARPlaneSpriteNode.swift; sourceTree = "<group>"; };
@@ -107,7 +107,6 @@
 				5D26AFE31E70FF29006A048B /* WARMenu */,
 				5D26AFAB1E70FAFA006A048B /* AppDelegate.swift */,
 				5D26AFF11E712B7E006A048B /* Assets.xcassets */,
-				5D26AFE91E71011A006A048B /* MyActions.sks */,
 				5D26AFBA1E70FAFA006A048B /* LaunchScreen.storyboard */,
 				5D26AFBD1E70FAFA006A048B /* Info.plist */,
 			);
@@ -161,6 +160,7 @@
 		5D26AFE21E70FF29006A048B /* View */ = {
 			isa = PBXGroup;
 			children = (
+				3036E5701E743931005E743F /* WARPlayerPlaneNode.swift */,
 				5D26AFF31E714205006A048B /* WARPlaneSpriteNode.swift */,
 			);
 			path = View;
@@ -308,7 +308,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5D26AFEA1E71011A006A048B /* MyActions.sks in Resources */,
 				5D26AFF21E712B7E006A048B /* Assets.xcassets in Resources */,
 				5D26AFBC1E70FAFA006A048B /* LaunchScreen.storyboard in Resources */,
 			);
@@ -339,6 +338,7 @@
 				5D26AFEC1E7109C8006A048B /* WARGameViewController.swift in Sources */,
 				5D26AFF41E714205006A048B /* WARPlaneSpriteNode.swift in Sources */,
 				5D26AFAC1E70FAFA006A048B /* AppDelegate.swift in Sources */,
+				3036E5711E743931005E743F /* WARPlayerPlaneNode.swift in Sources */,
 				30C6CA081E71994300556893 /* WARScoreManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -480,11 +480,13 @@
 		5D26AFD71E70FAFA006A048B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = QEJW2BZ99E;
 				INFOPLIST_FILE = Warcraft/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.guoyi.GYTagViewExample;
+				PRODUCT_BUNDLE_IDENTIFIER = com.guoyi.Warcraft;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 			};
@@ -493,11 +495,13 @@
 		5D26AFD81E70FAFA006A048B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = QEJW2BZ99E;
 				INFOPLIST_FILE = Warcraft/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.guoyi.GYTagViewExample;
+				PRODUCT_BUNDLE_IDENTIFIER = com.guoyi.Warcraft;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 			};
