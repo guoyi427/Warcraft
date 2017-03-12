@@ -42,6 +42,24 @@ class WARPlaneSpriteNode: SKSpriteNode {
         _shootBullet()
     }
     
+    init(blood: Int, position: CGPoint) {
+        super.init(texture: _enemysTexture, color: SKColor.clear, size: _enemysTexture.size())
+        currentBlood = blood
+        
+       
+        self.position = position
+        zRotation = CGFloat(M_PI)
+        name = EnemyNodeName
+        
+        //  物理属性
+        physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: size.width, height: size.height*0.3))//扁长不露馅，用纹理获取不规则图片过于消耗性能 所以直接用固定扁长size
+        physicsBody?.categoryBitMask = EnemyBitMask
+        physicsBody?.collisionBitMask = BulletsBitMask
+        physicsBody?.contactTestBitMask = BulletsBitMask
+        physicsBody?.allowsRotation = false
+        _shootBullet()
+    }
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

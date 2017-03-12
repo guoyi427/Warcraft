@@ -45,6 +45,8 @@ class WARGameViewController: UIViewController, SKPhysicsContactDelegate {
         _prepareScene()
         _prepareUI()
         _putEnemys()
+        
+        WAREnemysEmitter.sharedInstance.pushEnemy(gameScene: _gameScene)
     }
     
     //MARK: Prepare
@@ -101,12 +103,11 @@ class WARGameViewController: UIViewController, SKPhysicsContactDelegate {
         _gameScene.addChild(enemyNode)
         
         //  向下移动
-//        let actionMove = SKAction.moveBy(x: 0, y: -_gameScene.size.height, duration: 10)
-        let actionMove = SKAction.init(named: "EnemyQueue1")
+        let actionMove = SKAction.moveBy(x: 0, y: -_gameScene.size.height, duration: 10)
         let actionDone = SKAction.run {
             enemyNode.removeFromParent()
         }
-        enemyNode.run(SKAction.sequence([actionMove!, actionDone]))
+        enemyNode.run(SKAction.sequence([actionMove, actionDone]))
     }
     
     //MARK: Touch Delegate
