@@ -20,7 +20,16 @@ class WARPlayerPlaneNode: SKSpriteNode {
     /// 每分钟发射多少发炮弹
     fileprivate var BulletsShootPM: Double = 500
     /// 当前血量
-    var currentBlood: Int = 100    
+    var currentBlood: Int = 100
+    /// 飞机等级 默认1级
+    var level: Int = 1
+    
+    
+    /// 左 僚机
+    fileprivate let _leftWings = SKSpriteNode(color: SKColor.blue, size: CGSize(width: 10, height: 10))
+    
+    /// 右 僚机
+    fileprivate let _rightWings = SKSpriteNode(color: SKColor.blue, size: CGSize(width: 10, height: 10))
     
     init() {
         /// 玩家飞机纹理
@@ -40,8 +49,6 @@ class WARPlayerPlaneNode: SKSpriteNode {
         physicsBody?.allowsRotation = false
         
         _shootBullets()
-        
-        _addWingman()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -54,8 +61,9 @@ class WARPlayerPlaneNode: SKSpriteNode {
     fileprivate func _shootBullets() {
         let creatBullet = SKAction.run {
             //  每1000分 加一个子弹发射器
-            let count = WARScoreManager.sharedManager().currentScore/1000+1
-            self._creatBullet(count: count)
+            self.level = WARScoreManager.sharedManager().currentScore/1000+1
+            self.level = 6
+            self._creatBullet(count: self.level)
         }
         
         let waiteShoot = SKAction.wait(forDuration: 60/BulletsShootPM)
@@ -65,31 +73,12 @@ class WARPlayerPlaneNode: SKSpriteNode {
     
     /// 生成子弹
     fileprivate func _creatBullet(count: Int) {
-        var bulletsCount = count
         
-        if count>5 {
-            bulletsCount = 4
-        }
-        let padding:CGFloat = 2.5*CGFloat(bulletsCount-1)
-        
-        for index in 1...bulletsCount {
+        for index in 1...count {
             let bulletsNode = SKSpriteNode(texture: _bulletsTexture)
             
-            switch bulletsCount {
-            case 4:
-                if index == 1 {
-                    bulletsNode.position = CGPoint(x: position.x - size.width/2, y: position.y + size.height/2)
-                } else if index == 3 {
-                    bulletsNode.position = CGPoint(x: position.x + size.width/2, y: position.y + size.height/2)
-                }
-                bulletsNode.position = CGPoint(x: position.x - padding + CGFloat(index-1) * 5,
-                                               y: position.y + size.height/2)
-                break
-
-            default:
-                bulletsNode.position = CGPoint(x: position.x - padding + CGFloat(index-1) * 5,
-                                               y: position.y + size.height/2)
-            }
+            //  计算 position
+           _calculateBulletPosition(bulletsNode: bulletsNode, bulletsCount: count, index: index)
             
             bulletsNode.name = BulletNodeName
             
@@ -99,7 +88,7 @@ class WARPlayerPlaneNode: SKSpriteNode {
             bulletsNode.physicsBody?.collisionBitMask = EnemyBitMask
             bulletsNode.physicsBody?.contactTestBitMask = EnemyBitMask
             
-            self.parent?.addChild(bulletsNode)
+            addChild(bulletsNode)
             
             //  向上移动
             let actionMove = SKAction.moveBy(x: 0, y: ScreenSize.height, duration: 1)
@@ -107,6 +96,47 @@ class WARPlayerPlaneNode: SKSpriteNode {
                 bulletsNode.removeFromParent()
             }
             bulletsNode.run(SKAction.sequence([actionMove, actionDone]))
+        }
+    }
+    
+    fileprivate func _calculateBulletPosition(bulletsNode: SKSpriteNode, bulletsCount: Int, index: Int) {
+        //1,2,3     |||
+        //4         |  ||  |
+        //5         | | | | |
+        //6         ||  ||  ||
+        
+        let padding:CGFloat = 2.5*CGFloat(bulletsCount-1)
+        let defult_y = size.height/2
+        
+        switch bulletsCount {
+        case 4:
+            if index == 1 {
+                bulletsNode.position = CGPoint(x: -size.width/2, y: defult_y)
+            } else if index == 4 {
+                bulletsNode.position = CGPoint(x: size.width/2, y: defult_y)
+            } else {
+                bulletsNode.position = CGPoint(x: -padding + CGFloat(index-1) * 5,
+                                               y: defult_y)
+            }
+            break
+        case 5:
+            let padding_5: CGFloat = size.width/4
+            bulletsNode.position = CGPoint(x: padding_5 * CGFloat(index - 1)-size.width/2, y: defult_y)
+            break
+        case 6:
+            let padding_6: CGFloat = (size.width-15)/2
+            /// 下标为 偶数是 添加一个 padding
+            var evenIndexPadding: CGFloat = 5
+            if index%2==1 {
+                evenIndexPadding = 0
+            }
+            bulletsNode.position = CGPoint(x: CGFloat(index/2)*(padding_6+evenIndexPadding)-size.width/2, y: defult_y)
+            break
+            
+        default:
+            //1,2,3
+            bulletsNode.position = CGPoint(x: -padding + CGFloat(index-1) * 5,
+                                           y: defult_y)
         }
     }
     
