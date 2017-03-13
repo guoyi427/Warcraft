@@ -20,8 +20,7 @@ class WARPlayerPlaneNode: SKSpriteNode {
     /// 每分钟发射多少发炮弹
     fileprivate var BulletsShootPM: Double = 500
     /// 当前血量
-    var currentBlood: Int = 100
-    
+    var currentBlood: Int = 100    
     
     init() {
         /// 玩家飞机纹理
@@ -34,7 +33,7 @@ class WARPlayerPlaneNode: SKSpriteNode {
         position = CGPoint(x: ScreenSize.width/2, y: size_texture.height/2)
 
         //  物理属性
-        physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: size.width, height: size.height*0.3))//扁长不露馅，用纹理获取不规则图片过于消耗性能 所以直接用固定扁长size
+        physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: 3, height: 3))//扁长不露馅，用纹理获取不规则图片过于消耗性能 所以直接用固定扁长size
         physicsBody?.categoryBitMask = PlayerBitMask
         physicsBody?.collisionBitMask = BulletsWithEnemyBitMask
         physicsBody?.contactTestBitMask = BulletsWithEnemyBitMask
@@ -69,14 +68,29 @@ class WARPlayerPlaneNode: SKSpriteNode {
         var bulletsCount = count
         
         if count>5 {
-            bulletsCount = 5
+            bulletsCount = 4
         }
         let padding:CGFloat = 2.5*CGFloat(bulletsCount-1)
         
         for index in 1...bulletsCount {
             let bulletsNode = SKSpriteNode(texture: _bulletsTexture)
-            bulletsNode.position = CGPoint(x: position.x - padding + CGFloat(index-1) * 5,
-                                           y: position.y + size.height/2)
+            
+            switch bulletsCount {
+            case 4:
+                if index == 1 {
+                    bulletsNode.position = CGPoint(x: position.x - size.width/2, y: position.y + size.height/2)
+                } else if index == 3 {
+                    bulletsNode.position = CGPoint(x: position.x + size.width/2, y: position.y + size.height/2)
+                }
+                bulletsNode.position = CGPoint(x: position.x - padding + CGFloat(index-1) * 5,
+                                               y: position.y + size.height/2)
+                break
+
+            default:
+                bulletsNode.position = CGPoint(x: position.x - padding + CGFloat(index-1) * 5,
+                                               y: position.y + size.height/2)
+            }
+            
             bulletsNode.name = BulletNodeName
             
             //  物理属性
