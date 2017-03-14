@@ -19,6 +19,7 @@
 		5D26AFEC1E7109C8006A048B /* WARGameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D26AFEB1E7109C8006A048B /* WARGameViewController.swift */; };
 		5D26AFF21E712B7E006A048B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5D26AFF11E712B7E006A048B /* Assets.xcassets */; };
 		5D26AFF41E714205006A048B /* WARPlaneSpriteNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D26AFF31E714205006A048B /* WARPlaneSpriteNode.swift */; };
+		5D6FA5C41E77892C0035427F /* WARBulletNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6FA5C31E77892C0035427F /* WARBulletNode.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,6 +58,7 @@
 		5D26AFEB1E7109C8006A048B /* WARGameViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WARGameViewController.swift; sourceTree = "<group>"; };
 		5D26AFF11E712B7E006A048B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		5D26AFF31E714205006A048B /* WARPlaneSpriteNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WARPlaneSpriteNode.swift; sourceTree = "<group>"; };
+		5D6FA5C31E77892C0035427F /* WARBulletNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WARBulletNode.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -176,6 +178,7 @@
 			children = (
 				3036E5701E743931005E743F /* WARPlayerPlaneNode.swift */,
 				5D26AFF31E714205006A048B /* WARPlaneSpriteNode.swift */,
+				5D6FA5C31E77892C0035427F /* WARBulletNode.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -355,6 +358,7 @@
 				5D26AFF41E714205006A048B /* WARPlaneSpriteNode.swift in Sources */,
 				5D26AFAC1E70FAFA006A048B /* AppDelegate.swift in Sources */,
 				3036E5711E743931005E743F /* WARPlayerPlaneNode.swift in Sources */,
+				5D6FA5C41E77892C0035427F /* WARBulletNode.swift in Sources */,
 				30C6CA081E71994300556893 /* WARScoreManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
