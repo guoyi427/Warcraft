@@ -31,18 +31,6 @@ class WAREnemysEmitter:NSObject {
     fileprivate func _creatEnemy(gameScene: SKScene) {
     
         let enemyNode = WARPlaneSpriteNode(blood: 3, position: CGPoint(x: gameScene.size.width - 50, y: gameScene.size.height))
-        /*
-        let enemyNode = SKSpriteNode(texture: _enemyTexture)
-        enemyNode.position = CGPoint(x: gameScene.size.width - 50, y: gameScene.size.height)
-        enemyNode.zRotation = CGFloat(M_PI)
-        
-        //  物理属性
-        enemyNode.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: enemyNode.size.width, height: enemyNode.size.height*0.3))//扁长不露馅，用纹理获取不规则图片过于消耗性能 所以直接用固定扁长size
-        enemyNode.physicsBody?.categoryBitMask = EnemyBitMask
-        enemyNode.physicsBody?.collisionBitMask = BulletsBitMask
-        enemyNode.physicsBody?.contactTestBitMask = BulletsBitMask
-        enemyNode.physicsBody?.allowsRotation = false
-         */
         gameScene.addChild(enemyNode)
 
         //  向下移动

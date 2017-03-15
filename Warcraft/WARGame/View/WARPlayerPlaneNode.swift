@@ -79,6 +79,7 @@ class WARPlayerPlaneNode: SKSpriteNode {
             //  计算 position
            _calculateBulletPosition(bulletsNode: bulletsNode, bulletsCount: bulletsCount, index: index)
             self.parent!.addChild(bulletsNode)
+            bulletsNode.move()
         }
         
         //  添加僚机
@@ -140,6 +141,7 @@ class WARPlayerPlaneNode: SKSpriteNode {
             let bullet = WARBulletNode(type: .player, texture: _bulletsTexture)
             bullet.position = CGPoint(x: position.x + wingman.position.x, y: position.y + wingman.position.y + wingman.size.height/2)
             self.parent!.addChild(bullet)
+            bullet.move()
         }
         
         //  发射子弹 右
@@ -147,6 +149,7 @@ class WARPlayerPlaneNode: SKSpriteNode {
             let bullet = WARBulletNode(type: .player, texture: _bulletsTexture)
             bullet.position = CGPoint(x: position.x + wingman.position.x, y: position.y + wingman.position.y + wingman.size.height/2)
             self.parent!.addChild(bullet)
+            bullet.move()
         }
     }
     

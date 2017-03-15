@@ -13,6 +13,7 @@ class WARBulletNode: SKSpriteNode {
     enum WARBulletNodeType {
         case player
         case enemy
+        case boss
     }
     //  名称
     let BulletNodeName = "BulletNode"
@@ -25,26 +26,60 @@ class WARBulletNode: SKSpriteNode {
     init(type: WARBulletNodeType, texture: SKTexture) {
         super.init(texture: texture, color: SKColor.clear, size: texture.size())
         
-        name = BulletNodeName
-        
+        self.name = BulletNodeName
+        self.type = type
         //  物理属性
         physicsBody = SKPhysicsBody(rectangleOf: size)
-        physicsBody?.categoryBitMask = BulletsBitMask
-        physicsBody?.collisionBitMask = EnemyBitMask
-        physicsBody?.contactTestBitMask = EnemyBitMask
-        
-        
-        //  向上移动
-        let actionMove = SKAction.moveBy(x: 0, y: ScreenSize.height, duration: 1)
-        let actionDone = SKAction.run {
-            self.removeFromParent()
-        }
-        run(SKAction.sequence([actionMove, actionDone]))
 
+        switch type {
+        case .player:
+            physicsBody?.categoryBitMask = BulletsBitMask
+            physicsBody?.collisionBitMask = EnemyBitMask
+            physicsBody?.contactTestBitMask = EnemyBitMask
+            break
+        case .enemy:
+            physicsBody?.categoryBitMask = BulletsWithEnemyBitMask
+            physicsBody?.collisionBitMask = PlayerBitMask
+            physicsBody?.contactTestBitMask = PlayerBitMask
+            zRotation = CGFloat(M_PI)
+            break
+        case .boss:
+            physicsBody?.categoryBitMask = BulletsWithEnemyBitMask
+            physicsBody?.collisionBitMask = PlayerBitMask
+            physicsBody?.contactTestBitMask = PlayerBitMask
+            zRotation = CGFloat(M_PI)
+            break
+        }
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    //MARK: Public Methods
+    
+    /// 子弹移动
+    func move() {
+        switch type {
+        case .player:
+            //  向上移动
+            let actionMove = SKAction.moveBy(x: 0, y: ScreenSize.height, duration: 1)
+            let actionDone = SKAction.run {
+                self.removeFromParent()
+            }
+            run(SKAction.sequence([actionMove, actionDone]))
+            break
+        case .enemy:
+            //  向下移动
+            let actionMove = SKAction.moveBy(x: 0, y: 0, duration: 1)
+            let actionDone = SKAction.run {
+                self.removeFromParent()
+            }
+            run(SKAction.sequence([actionMove, actionDone]))
+            break
+        default:
+            break
+        }
     }
     
 }

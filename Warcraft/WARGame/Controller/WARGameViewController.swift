@@ -13,7 +13,6 @@ let BulletsBitMask: UInt32          = 0x1 << 1  //  玩家子弹
 let EnemyBitMask: UInt32            = 0x1 << 2  //  敌军飞机
 let BulletsWithEnemyBitMask: UInt32 = 0x1 << 3  //  敌军子弹
 
-
 import UIKit
 
 import SpriteKit
@@ -44,9 +43,14 @@ class WARGameViewController: UIViewController, SKPhysicsContactDelegate {
         
         _prepareScene()
         _prepareUI()
-        _putEnemys()
+        //  放置普通敌机
+//        _putEnemys()
+        //  放置队列敌机
+//        WAREnemysEmitter.sharedInstance.pushEnemy(gameScene: _gameScene)
         
-        WAREnemysEmitter.sharedInstance.pushEnemy(gameScene: _gameScene)
+        let boss1 = WARBoss1Node()
+        _gameScene.addChild(boss1)
+        boss1.show()
     }
     
     //MARK: Prepare

@@ -74,7 +74,7 @@ class WARPlaneSpriteNode: SKSpriteNode {
     
     /// 血条
     fileprivate func _prepareBloodNode() {
-        let bloodBGNode = SKSpriteNode(color: SKColor.gray, size: CGSize(width: size.width, height: 5))
+        let bloodBGNode = SKSpriteNode(color: SKColor.gray, size: CGSize(width: size.width, height: 2))
         bloodBGNode.position = CGPoint(x: 0, y: -size.height/2-10)
         addChild(bloodBGNode)
         
