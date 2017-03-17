@@ -8,29 +8,27 @@
 
 import SpriteKit
 
-class WARBulletNode: SKSpriteNode {
-    
-    enum WARBulletNodeType {
-        case player
-        case enemy
-        case boss
-    }
-    //  名称
-    let BulletNodeName = "BulletNode"
-    /// 屏幕size
-    fileprivate let ScreenSize = UIScreen.main.bounds.size
-    
-    var type: WARBulletNodeType = .enemy
-    
-    
-    init(type: WARBulletNodeType, texture: SKTexture) {
-        super.init(texture: texture, color: SKColor.clear, size: texture.size())
-        
-        self.name = BulletNodeName
-        self.type = type
-        //  物理属性
-        physicsBody = SKPhysicsBody(rectangleOf: size)
+enum WARBulletNodeType {
+    case player
+    case enemy
+    case boss
+}
 
+extension SKNode {
+    
+    //  名称
+    var BulletNodeName: String { return "BulletNode" }
+    
+    //MARK: Public Methods
+    
+    /// 准备物理属性
+    ///
+    /// - Parameter type: 子弹类型
+    func preparePhysicsBody(type: WARBulletNodeType) {
+        //  物理属性
+        physicsBody = SKPhysicsBody(rectangleOf: self.frame.size)
+        physicsBody?.allowsRotation = false
+        
         switch type {
         case .player:
             physicsBody?.categoryBitMask = BulletsBitMask
@@ -52,18 +50,12 @@ class WARBulletNode: SKSpriteNode {
         }
     }
     
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    //MARK: Public Methods
-    
     /// 子弹移动
-    func move() {
+    func move(type: WARBulletNodeType) {
         switch type {
         case .player:
             //  向上移动
-            let actionMove = SKAction.moveBy(x: 0, y: ScreenSize.height, duration: 1)
+            let actionMove = SKAction.moveBy(x: 0, y: UIScreen.main.bounds.height, duration: 1)
             let actionDone = SKAction.run {
                 self.removeFromParent()
             }

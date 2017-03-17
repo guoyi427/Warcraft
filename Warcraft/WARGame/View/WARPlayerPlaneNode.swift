@@ -75,11 +75,13 @@ class WARPlayerPlaneNode: SKSpriteNode {
         let bulletsCount = count < 6 ? count : 5
         
         for index in 1...bulletsCount {
-            let bulletsNode = WARBulletNode(type: .player, texture: _bulletsTexture)
+//            let bulletsNode = WARBulletNode(type: .player, texture: _bulletsTexture)
+            let bulletsNode = SKSpriteNode(texture: _bulletsTexture)
+            bulletsNode.preparePhysicsBody(type: .player)
             //  计算 position
            _calculateBulletPosition(bulletsNode: bulletsNode, bulletsCount: bulletsCount, index: index)
             self.parent!.addChild(bulletsNode)
-            bulletsNode.move()
+            bulletsNode.move(type: .player)
         }
         
         //  添加僚机
@@ -138,18 +140,22 @@ class WARPlayerPlaneNode: SKSpriteNode {
         
         //  发射子弹 左
         if let wingman = _leftWings {
-            let bullet = WARBulletNode(type: .player, texture: _bulletsTexture)
+//            let bullet = WARBulletNode(type: .player, texture: _bulletsTexture)
+            let bullet = SKSpriteNode(texture: _bulletsTexture)
+            bullet.preparePhysicsBody(type: .player)
             bullet.position = CGPoint(x: position.x + wingman.position.x, y: position.y + wingman.position.y + wingman.size.height/2)
             self.parent!.addChild(bullet)
-            bullet.move()
+            bullet.move(type: .player)
         }
         
         //  发射子弹 右
         if let wingman = _rightWings {
-            let bullet = WARBulletNode(type: .player, texture: _bulletsTexture)
+//            let bullet = WARBulletNode(type: .player, texture: _bulletsTexture)
+            let bullet = SKSpriteNode(texture: _bulletsTexture)
+            bullet.preparePhysicsBody(type: .player)
             bullet.position = CGPoint(x: position.x + wingman.position.x, y: position.y + wingman.position.y + wingman.size.height/2)
             self.parent!.addChild(bullet)
-            bullet.move()
+            bullet.move(type: .player)
         }
     }
     
