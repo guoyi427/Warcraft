@@ -55,11 +55,11 @@ class WARBoss1Node: SKSpriteNode {
         //  扇形子弹
         let waitAngleShootAction = SKAction.wait(forDuration: 0.5)
         let creatAngleAction = SKAction.run {
-            self._creatBullets1(origin_position: CGPoint(x: self.position.x+50, y: self.position.y - self.size.height/2))
-            self._creatBullets1(origin_position: CGPoint(x: self.position.x-50, y: self.position.y - self.size.height/2))
+            self._creatBullets1(origin_position: CGPoint(x: self.position.x+50, y: self.position.y))
+            self._creatBullets1(origin_position: CGPoint(x: self.position.x-50, y: self.position.y))
         }
         //  扇形子弹
-        let angleBulletAction = SKAction.repeat(SKAction.sequence([waitAngleShootAction, creatAngleAction]), count: 50)
+        let angleBulletAction = SKAction.repeat(SKAction.sequence([waitAngleShootAction, creatAngleAction]), count: 30)
         
         //  跟踪子弹
         let creatTargetBulletsAction = SKAction.run {
@@ -84,9 +84,9 @@ class WARBoss1Node: SKSpriteNode {
         // 子弹位置
         let position_bullets = origin_position
         //  每一波子弹个数
-        let count = 5
-        //  子弹扇形夹角  90度
-        let sectorAngle = CGFloat(M_PI)/2
+        let count = 10
+        //  子弹扇形夹角
+        let sectorAngle = CGFloat(M_PI)*2
         //  每条单线 夹角
         let avgAngle = sectorAngle / CGFloat(count)
         //  第一条单线的初始角度
@@ -125,19 +125,31 @@ class WARBoss1Node: SKSpriteNode {
     ///   - target_position: 目标位置
     fileprivate func _creatBullets2(origin_position: CGPoint, target_position: CGPoint) {
         //  子弹
-        let bulletNode = SKSpriteNode(texture: _bulletTexture)
+        let bulletNode = SKSpriteNode(color: SKColor.red, size: CGSize(width: 5, height: 5))//SKSpriteNode(texture: _bulletTexture)
+
         bulletNode.preparePhysicsBody(type: .boss)
         bulletNode.position = origin_position
         parent?.addChild(bulletNode)
         
         //  动画
         /// 目标位置和当前位置 计算距离差 从而计算子弹移动时间
-        let dx: Double = Double(target_position.x - origin_position.x)
-        let dy: Double = Double(target_position.y - origin_position.y)
-        let distance = sqrt(dx * dx + dy * dy)
+        let dx: Double = Double(origin_position.x - target_position.x)
+        let dy: Double = Double(origin_position.y - target_position.y)
         
+        //  角度
+        let angle = -tan(dx/dy) + M_PI
+        bulletNode.zRotation = CGFloat(angle)
         
-        let moveAction = SKAction.move(to: target_position, duration: distance/200)
+        //  消失点
+        let target_dy = Double(origin_position.y)
+        let target_dx = dx * (target_dy / dy)
+        let dismissPoint = CGPoint(x: origin_position.x-CGFloat(target_dx), y: 0)
+        
+        //  移动距离
+        let distance = sqrt(target_dx * target_dx + target_dy * target_dy)
+
+        
+        let moveAction = SKAction.move(to: dismissPoint, duration: distance/200)
         let removeAction = SKAction.run {
             bulletNode.removeFromParent()
         }
