@@ -10,6 +10,8 @@ import SpriteKit
 
 class WARPlayerPlaneNode: SKSpriteNode {
     
+    static let _instance = WARPlayerPlaneNode()
+    
     /// 屏幕size
     fileprivate let ScreenSize = UIScreen.main.bounds.size
     
@@ -28,6 +30,13 @@ class WARPlayerPlaneNode: SKSpriteNode {
     
     /// 右 僚机
     fileprivate var _rightWings: SKSpriteNode? = nil
+    
+    /// 单例
+    ///
+    /// - Returns: 实例对象
+    class func sharedInstance() -> WARPlayerPlaneNode {
+        return _instance
+    }
     
     init() {
         /// 玩家飞机纹理

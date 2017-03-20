@@ -14,6 +14,7 @@ class WARScoreManager {
     /// 分数
     public var currentScore = 0
     
+    
     class func sharedManager() -> WARScoreManager {
         return _instance
     }

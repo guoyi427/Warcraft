@@ -22,7 +22,7 @@ class WARGameViewController: UIViewController, SKPhysicsContactDelegate {
     var _gameView:SKView! = nil
     let _gameScene = SKScene(size: UIScreen.main.bounds.size)
     /// 玩家node
-    let _playerNode = WARPlayerPlaneNode()
+    let _playerNode = WARPlayerPlaneNode.sharedInstance()//WARPlayerPlaneNode()
     /// 分数标签
     fileprivate let _scoreLabel = SKLabelNode(text: "0")
     /// 血量
@@ -87,6 +87,7 @@ class WARGameViewController: UIViewController, SKPhysicsContactDelegate {
         _bloodLabel.fontSize = 20
         _bloodLabel.position = CGPoint(x: 10, y: _gameScene.size.height - 50)
         _bloodLabel.horizontalAlignmentMode = .left
+        _bloodLabel.text = "血量:\(_playerNode.currentBlood)"
         _gameScene.addChild(_bloodLabel)
     }
     
