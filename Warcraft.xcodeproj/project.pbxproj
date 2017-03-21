@@ -11,6 +11,7 @@
 		3036E5741E744F59005E743F /* WARAction.sks in Resources */ = {isa = PBXBuildFile; fileRef = 3036E5731E744F59005E743F /* WARAction.sks */; };
 		305AD3D51E74F3980029E6D8 /* WAREnemysEmitter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 305AD3D41E74F3980029E6D8 /* WAREnemysEmitter.swift */; };
 		30C6CA081E71994300556893 /* WARScoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30C6CA071E71994300556893 /* WARScoreManager.swift */; };
+		5D0F74B31E80D3B600264990 /* Player_daojujiguang.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5D0F74B21E80D3B600264990 /* Player_daojujiguang.plist */; };
 		5D26AFAC1E70FAFA006A048B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D26AFAB1E70FAFA006A048B /* AppDelegate.swift */; };
 		5D26AFBC1E70FAFA006A048B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5D26AFBA1E70FAFA006A048B /* LaunchScreen.storyboard */; };
 		5D26AFC71E70FAFA006A048B /* WarcraftTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D26AFC61E70FAFA006A048B /* WarcraftTests.swift */; };
@@ -45,6 +46,7 @@
 		3036E5731E744F59005E743F /* WARAction.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = WARAction.sks; sourceTree = "<group>"; };
 		305AD3D41E74F3980029E6D8 /* WAREnemysEmitter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WAREnemysEmitter.swift; sourceTree = "<group>"; };
 		30C6CA071E71994300556893 /* WARScoreManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WARScoreManager.swift; sourceTree = "<group>"; };
+		5D0F74B21E80D3B600264990 /* Player_daojujiguang.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Player_daojujiguang.plist; sourceTree = "<group>"; };
 		5D26AFA81E70FAFA006A048B /* Warcraft.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Warcraft.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5D26AFAB1E70FAFA006A048B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5D26AFBB1E70FAFA006A048B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -96,6 +98,14 @@
 			path = Action;
 			sourceTree = "<group>";
 		};
+		5D0F74B11E80D3AA00264990 /* Resoucres */ = {
+			isa = PBXGroup;
+			children = (
+				5D0F74B21E80D3B600264990 /* Player_daojujiguang.plist */,
+			);
+			path = Resoucres;
+			sourceTree = "<group>";
+		};
 		5D26AF9F1E70FAF9006A048B = {
 			isa = PBXGroup;
 			children = (
@@ -119,6 +129,7 @@
 		5D26AFAA1E70FAFA006A048B /* Warcraft */ = {
 			isa = PBXGroup;
 			children = (
+				5D0F74B11E80D3AA00264990 /* Resoucres */,
 				5D26AFDF1E70FF29006A048B /* WARGame */,
 				5D26AFE31E70FF29006A048B /* WARMenu */,
 				5D26AFAB1E70FAFA006A048B /* AppDelegate.swift */,
@@ -331,6 +342,7 @@
 				5D26AFF21E712B7E006A048B /* Assets.xcassets in Resources */,
 				3036E5741E744F59005E743F /* WARAction.sks in Resources */,
 				5D26AFBC1E70FAFA006A048B /* LaunchScreen.storyboard in Resources */,
+				5D0F74B31E80D3B600264990 /* Player_daojujiguang.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

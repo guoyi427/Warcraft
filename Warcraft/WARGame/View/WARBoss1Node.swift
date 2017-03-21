@@ -14,6 +14,7 @@ class WARBoss1Node: SKSpriteNode {
     fileprivate let _bossTexture = SKTexture(image: #imageLiteral(resourceName: "plane3"))
     /// 子弹纹理
     fileprivate let _bulletTexture = SKTexture(image: #imageLiteral(resourceName: "bullets"))
+    fileprivate let _bulletPurpleTexture = SKTexture(image: #imageLiteral(resourceName: "Bullets_Purple"))
     /// 子弹角度变化量
     fileprivate var _bulletsAnglePadding: CGFloat = 0
     
@@ -84,7 +85,7 @@ class WARBoss1Node: SKSpriteNode {
         // 子弹位置
         let position_bullets = origin_position
         //  每一波子弹个数
-        let count = 10
+        let count = 30
         //  子弹扇形夹角
         let sectorAngle = CGFloat(M_PI)*2
         //  每条单线 夹角
@@ -125,7 +126,7 @@ class WARBoss1Node: SKSpriteNode {
     ///   - target_position: 目标位置
     fileprivate func _creatBullets2(origin_position: CGPoint, target_position: CGPoint) {
         //  子弹
-        let bulletNode = SKSpriteNode(color: SKColor.red, size: CGSize(width: 5, height: 5))//SKSpriteNode(texture: _bulletTexture)
+        let bulletNode = SKSpriteNode(texture: _bulletPurpleTexture, size: _bulletPurpleTexture.size())
 
         bulletNode.preparePhysicsBody(type: .boss)
         bulletNode.position = origin_position

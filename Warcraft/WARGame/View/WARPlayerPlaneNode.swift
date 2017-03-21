@@ -17,6 +17,8 @@ class WARPlayerPlaneNode: SKSpriteNode {
     
     /// 子弹纹理，一次加载多次使用
     let _bulletsTexture = SKTexture(image: #imageLiteral(resourceName: "bullets"))
+    /// 极光纹理
+    let _jiguangTexture = SKTexture(image: #imageLiteral(resourceName: "Player_daojujiguang"))
     /// 每分钟发射多少发炮弹
     fileprivate var BulletsShootPM: Double = 500
     /// 当前血量
@@ -55,7 +57,12 @@ class WARPlayerPlaneNode: SKSpriteNode {
         physicsBody?.contactTestBitMask = BulletsWithEnemyBitMask
         physicsBody?.allowsRotation = false
         
-        _shootBullets()
+//        _shootBullets()
+        
+        let showJiguangAction = SKAction.run {
+            self._creatJiguangBullets()
+        }
+        run(SKAction.sequence([SKAction.wait(forDuration: 0.2), showJiguangAction]))
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -63,6 +70,69 @@ class WARPlayerPlaneNode: SKSpriteNode {
     }
     
     //MARK: Private Methods
+    
+    fileprivate func _creatJiguangBullets() {
+        var propertyListForamt =  PropertyListSerialization.PropertyListFormat.xml //Format of the Property List.
+        var plistData: [String: AnyObject] = [:] //Our data
+        let plistPath: String? = Bundle.main.path(forResource: "Player_daojujiguang", ofType: "plist")! //the path of the data
+        let plistXML = FileManager.default.contents(atPath: plistPath!)!
+        do {//convert the data to a dictionary and handle errors.
+            plistData = try PropertyListSerialization.propertyList(from: plistXML, options: .mutableContainersAndLeaves, format: &propertyListForamt) as! [String:AnyObject]
+            
+        } catch {
+            print("Error reading plist: \(error), format: \(propertyListForamt)")
+        }
+        
+        let framesDic:[String: AnyObject] = plistData["frames"] as! Dictionary
+        var imageKeys:[String] = []
+        for keys in framesDic.keys {
+            imageKeys.append(keys)
+        }
+        
+        imageKeys.sort()
+        
+        print("image keys \(imageKeys)")
+        
+        var textureFrameList:[AnyObject] = []
+    
+        for tempKey in imageKeys {
+            /*{
+             frame = "{{333,0},{110,506}}";
+             offset = "{1,-3}";
+             rotated = 0;
+             sourceColorRect = "{{10,6},{110,506}}";
+             */
+            if let textureDic:[String: AnyObject] = framesDic[tempKey] as! [String : AnyObject]? {
+                if let textureFrame = textureDic["frame"] {
+                    textureFrameList.append(textureFrame)
+                }
+            }
+        }
+        
+        print("frames list = \(textureFrameList)")
+        
+        var textureList:[SKTexture] = []
+        let textureSize = _jiguangTexture.size()
+        for textureFrameValue in textureFrameList {
+            if let frameString: String = textureFrameValue as? String {
+                var textureRect = CGRectFromString(frameString)
+                textureRect.origin.x = textureRect.origin.x/2
+                textureRect.origin.y = textureRect.origin.y/2
+                textureRect.size.width = textureRect.size.width/2
+                textureRect.size.height = textureRect.size.height/2
+                let newFrame = CGRect(x: textureRect.origin.x/textureSize.width, y: textureRect.origin.y/textureSize.height, width: textureRect.size.width/textureSize.width, height: textureRect.size.height/textureSize.height)
+                let jiguangTexture = SKTexture(rect: newFrame, in: _jiguangTexture)
+                textureList.append(jiguangTexture)
+            }
+        }
+        
+        let bullet = SKSpriteNode(texture: textureList.first)
+        bullet.position = CGPoint(x: 0, y: self.size.height/2 + textureSize.height/2)
+        addChild(bullet)
+        
+        let action = SKAction.animate(with: textureList, timePerFrame: 0.1)
+        bullet.run(SKAction.repeatForever(action))
+    }
     
     /// 发射子弹
     fileprivate func _shootBullets() {
