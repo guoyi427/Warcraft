@@ -57,12 +57,12 @@ class WARPlayerPlaneNode: SKSpriteNode {
         physicsBody?.contactTestBitMask = BulletsWithEnemyBitMask
         physicsBody?.allowsRotation = false
         
-//        _shootBullets()
+        _shootBullets()
         
-        let showJiguangAction = SKAction.run {
-            self._creatJiguangBullets()
-        }
-        run(SKAction.sequence([SKAction.wait(forDuration: 0.2), showJiguangAction]))
+//        let showJiguangAction = SKAction.run {
+//            self._creatJiguangBullets()
+//        }
+//        run(SKAction.sequence([SKAction.wait(forDuration: 0.2), showJiguangAction]))
     }
     
     required init?(coder aDecoder: NSCoder) {

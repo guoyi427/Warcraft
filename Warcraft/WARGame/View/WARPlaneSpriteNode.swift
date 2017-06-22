@@ -44,6 +44,8 @@ class WARPlaneSpriteNode: SKSpriteNode {
         physicsBody?.contactTestBitMask = BulletsBitMask
         physicsBody?.allowsRotation = false
         
+        anchorPoint = CGPoint(x: 0.5, y: 0)
+        
         _prepareBloodNode()
         
         _shootBullet()

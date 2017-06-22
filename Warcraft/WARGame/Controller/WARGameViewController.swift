@@ -21,6 +21,8 @@ class WARGameViewController: UIViewController, SKPhysicsContactDelegate {
     
     var _gameView:SKView! = nil
     let _gameScene = SKScene(size: UIScreen.main.bounds.size)
+    fileprivate let _backgroundNode = WARBackgroundNode()
+    
     /// 玩家node
     let _playerNode = WARPlayerPlaneNode.sharedInstance()//WARPlayerPlaneNode()
     /// 分数标签
@@ -44,7 +46,7 @@ class WARGameViewController: UIViewController, SKPhysicsContactDelegate {
         _prepareScene()
         _prepareUI()
         //  放置普通敌机
-//        _putEnemys()
+        _putEnemys()
         //  放置队列敌机
 //        WAREnemysEmitter.sharedInstance.pushEnemy(gameScene: _gameScene)
         
@@ -61,7 +63,7 @@ class WARGameViewController: UIViewController, SKPhysicsContactDelegate {
         _gameView = view as! SKView
         
         _gameScene.backgroundColor = SKColor.black
-        
+        _gameScene.delegate = self
         //  物理世界
         _gameScene.physicsWorld.contactDelegate = self
         _gameScene.physicsWorld.gravity = CGVector(dx: 0, dy: 0)
@@ -69,6 +71,9 @@ class WARGameViewController: UIViewController, SKPhysicsContactDelegate {
         _gameView.presentScene(_gameScene)
         _gameView.showsFPS = true
         _gameView.showsNodeCount = true
+        
+        //  滚动背景，滚动在update中执行 background update方法
+        _gameScene.addChild(_backgroundNode)
         
         //  玩家飞机
         _gameScene.addChild(_playerNode)
@@ -190,6 +195,11 @@ class WARGameViewController: UIViewController, SKPhysicsContactDelegate {
             _bloodLabel.text = "血量:\(_playerNode.currentBlood)"
         }
     }
-    
-    
+}
+
+// MARK: - Scene - Delegate
+extension WARGameViewController: SKSceneDelegate {
+    func update(_ currentTime: TimeInterval, for scene: SKScene) {
+        _backgroundNode.update()
+    }
 }
