@@ -25,6 +25,8 @@ class WARMenuViewController: UIViewController {
     }
     
     func startButtonAction() {
+        WARResourcesManager.sharedManager.loadTexture()
+        
         let gameVC = WARGameViewController()
         navigationController?.pushViewController(gameVC, animated: true)
     }

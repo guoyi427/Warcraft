@@ -10,20 +10,32 @@ import SpriteKit
 
 class WARBoss1Node: SKSpriteNode {
     
+    //  SpriteKit
     /// 飞机纹理
-    fileprivate let _bossTexture = SKTexture(image: #imageLiteral(resourceName: "plane3"))
+    fileprivate let _bossTexture = WARResourcesManager.sharedManager.fetchTexture(name: key_plane3)
     /// 子弹纹理
-    fileprivate let _bulletTexture = SKTexture(image: #imageLiteral(resourceName: "bullets"))
-    fileprivate let _bulletPurpleTexture = SKTexture(image: #imageLiteral(resourceName: "Bullets_Purple"))
+    fileprivate let _bulletTexture = WARResourcesManager.sharedManager.fetchTexture(name: key_bullets)
+    fileprivate let _bulletPurpleTexture = WARResourcesManager.sharedManager.fetchTexture(name: key_bulletsPurple)
+    /// 血条
+    fileprivate let _bloodNode = SKSpriteNode(color: SKColor.red, size: CGSize.zero)
+    
+    
+    //  Data
     /// 子弹角度变化量
     fileprivate var _bulletsAnglePadding: CGFloat = 0
+    /// 初始血量
+    var originBlood: Int = 1
+    /// 当前血量
+    var currentBlood: Int = 1
     
-    init() {
+    init(blood: Int) {
         super.init(texture: _bossTexture, color: SKColor.clear, size: CGSize(width: 150, height: 150))
         
         //  基础属性
         position = CGPoint(x: UIScreen.main.bounds.width/2, y: UIScreen.main.bounds.height + size.height/2)
-        zRotation = CGFloat(M_PI)
+        zRotation = CGFloat(Double.pi)
+        originBlood = blood
+        currentBlood = blood
         
         //  物理属性
         physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: size.width, height: size.height*0.3))//扁长不露馅，用纹理获取不规则图片过于消耗性能 所以直接用固定扁长size
@@ -31,15 +43,33 @@ class WARBoss1Node: SKSpriteNode {
         physicsBody?.collisionBitMask = BulletsBitMask
         physicsBody?.contactTestBitMask = BulletsBitMask
         physicsBody?.allowsRotation = false
+        physicsBody?.isDynamic = false
         
+        //  血条
+        _prepareBloodNode()
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    //MARK: Public Methods
-    
+}
+
+// MARK: - Prepare
+extension WARBoss1Node {
+    /// 血条
+    fileprivate func _prepareBloodNode() {
+        let bloodBGNode = SKSpriteNode(color: SKColor.gray, size: CGSize(width: size.width, height: 2))
+        bloodBGNode.position = CGPoint(x: 0, y: -size.height/2-10)
+        addChild(bloodBGNode)
+        
+        _bloodNode.size = bloodBGNode.size
+        _bloodNode.position = CGPoint.zero
+        bloodBGNode.addChild(_bloodNode)
+    }
+}
+
+// MARK: - Public - Methods
+extension WARBoss1Node {
     func show() {
         //  出场动画
         let moveInAction = SKAction.moveTo(y: UIScreen.main.bounds.height - size.height, duration: 2)
@@ -48,8 +78,23 @@ class WARBoss1Node: SKSpriteNode {
         }
         run(SKAction.sequence([moveInAction, waitAction]))
     }
+    
+    /// 掉血
+    func subBlood() {
+        currentBlood = currentBlood - 1
+        
+        _bloodNode.xScale = CGFloat(currentBlood)/CGFloat(originBlood)
+        _bloodNode.position = CGPoint(x: (1-_bloodNode.xScale)*size.width/2, y: 0)
+        
+        if currentBlood == 0 {
+            WARScoreManager.sharedManager().addScore(score: originBlood * 100)
+            removeFromParent()
+        }
+    }
+}
 
-    //MARK: Private Methods
+// MARK: - Private - Methods
+extension WARBoss1Node {
     
     /// 控制子弹发射
     fileprivate func _shootBullets() {
@@ -87,11 +132,11 @@ class WARBoss1Node: SKSpriteNode {
         //  每一波子弹个数
         let count = 30
         //  子弹扇形夹角
-        let sectorAngle = CGFloat(M_PI)*2
+        let sectorAngle = CGFloat(Double.pi)*2
         //  每条单线 夹角
         let avgAngle = sectorAngle / CGFloat(count)
         //  第一条单线的初始角度
-        let firstOriginAngle = (CGFloat(M_PI) - sectorAngle) / 2
+        let firstOriginAngle = (CGFloat(Double.pi) - sectorAngle) / 2
         //  子弹射程
         let bulletRange = position.y
         
@@ -105,7 +150,7 @@ class WARBoss1Node: SKSpriteNode {
             //  子弹动画
             //  当前子弹角度
             let angle = firstOriginAngle+avgAngle*CGFloat(index)
-            bulletNode.zRotation = angle + CGFloat(M_PI_2)
+            bulletNode.zRotation = angle + CGFloat(Double.pi/2.0)
             
             let x = position_bullets.x - bulletRange * cos(angle)
             let y = position_bullets.y - bulletRange * sin(angle)
@@ -127,7 +172,7 @@ class WARBoss1Node: SKSpriteNode {
     fileprivate func _creatBullets2(origin_position: CGPoint, target_position: CGPoint) {
         //  子弹
         let bulletNode = SKSpriteNode(texture: _bulletPurpleTexture, size: _bulletPurpleTexture.size())
-
+        
         bulletNode.preparePhysicsBody(type: .boss)
         bulletNode.position = origin_position
         parent?.addChild(bulletNode)
@@ -138,7 +183,7 @@ class WARBoss1Node: SKSpriteNode {
         let dy: Double = Double(origin_position.y - target_position.y)
         
         //  角度
-        let angle = -tan(dx/dy) + M_PI
+        let angle = -tan(dx/dy) + Double.pi
         bulletNode.zRotation = CGFloat(angle)
         
         //  消失点
@@ -148,7 +193,7 @@ class WARBoss1Node: SKSpriteNode {
         
         //  移动距离
         let distance = sqrt(target_dx * target_dx + target_dy * target_dy)
-
+        
         
         let moveAction = SKAction.move(to: dismissPoint, duration: distance/200)
         let removeAction = SKAction.run {
@@ -157,5 +202,4 @@ class WARBoss1Node: SKSpriteNode {
         
         bulletNode.run(SKAction.sequence([moveAction, removeAction]))
     }
-    
 }

@@ -16,9 +16,9 @@ class WARPlayerPlaneNode: SKSpriteNode {
     fileprivate let ScreenSize = UIScreen.main.bounds.size
     
     /// 子弹纹理，一次加载多次使用
-    let _bulletsTexture = SKTexture(image: #imageLiteral(resourceName: "bullets"))
+    let _bulletsTexture = WARResourcesManager.sharedManager.fetchTexture(name: key_bullets)
     /// 极光纹理
-    let _jiguangTexture = SKTexture(image: #imageLiteral(resourceName: "Player_daojujiguang"))
+    let _jiguangTexture = WARResourcesManager.sharedManager.fetchTexture(name: key_jiguang)
     /// 每分钟发射多少发炮弹
     fileprivate var BulletsShootPM: Double = 500
     /// 当前血量
@@ -42,7 +42,7 @@ class WARPlayerPlaneNode: SKSpriteNode {
     
     init() {
         /// 玩家飞机纹理
-        let texture = SKTexture(image: #imageLiteral(resourceName: "plane2"))
+        let texture = WARResourcesManager.sharedManager.fetchTexture(name: key_plane1)
         /// 玩家飞机size
         let size_texture = texture.size()
         
@@ -56,6 +56,7 @@ class WARPlayerPlaneNode: SKSpriteNode {
         physicsBody?.collisionBitMask = BulletsWithEnemyBitMask
         physicsBody?.contactTestBitMask = BulletsWithEnemyBitMask
         physicsBody?.allowsRotation = false
+        physicsBody?.isDynamic = false
         
         _shootBullets()
         
@@ -71,63 +72,12 @@ class WARPlayerPlaneNode: SKSpriteNode {
     
     //MARK: Private Methods
     
+    /// 创建激光
     fileprivate func _creatJiguangBullets() {
-        var propertyListForamt =  PropertyListSerialization.PropertyListFormat.xml //Format of the Property List.
-        var plistData: [String: AnyObject] = [:] //Our data
-        let plistPath: String? = Bundle.main.path(forResource: "Player_daojujiguang", ofType: "plist")! //the path of the data
-        let plistXML = FileManager.default.contents(atPath: plistPath!)!
-        do {//convert the data to a dictionary and handle errors.
-            plistData = try PropertyListSerialization.propertyList(from: plistXML, options: .mutableContainersAndLeaves, format: &propertyListForamt) as! [String:AnyObject]
-            
-        } catch {
-            print("Error reading plist: \(error), format: \(propertyListForamt)")
-        }
-        
-        let framesDic:[String: AnyObject] = plistData["frames"] as! Dictionary
-        var imageKeys:[String] = []
-        for keys in framesDic.keys {
-            imageKeys.append(keys)
-        }
-        
-        imageKeys.sort()
-        
-        print("image keys \(imageKeys)")
-        
-        var textureFrameList:[AnyObject] = []
-    
-        for tempKey in imageKeys {
-            /*{
-             frame = "{{333,0},{110,506}}";
-             offset = "{1,-3}";
-             rotated = 0;
-             sourceColorRect = "{{10,6},{110,506}}";
-             */
-            if let textureDic:[String: AnyObject] = framesDic[tempKey] as! [String : AnyObject]? {
-                if let textureFrame = textureDic["frame"] {
-                    textureFrameList.append(textureFrame)
-                }
-            }
-        }
-        
-        print("frames list = \(textureFrameList)")
-        
-        var textureList:[SKTexture] = []
-        let textureSize = _jiguangTexture.size()
-        for textureFrameValue in textureFrameList {
-            if let frameString: String = textureFrameValue as? String {
-                var textureRect = CGRectFromString(frameString)
-                textureRect.origin.x = textureRect.origin.x/2
-                textureRect.origin.y = textureRect.origin.y/2
-                textureRect.size.width = textureRect.size.width/2
-                textureRect.size.height = textureRect.size.height/2
-                let newFrame = CGRect(x: textureRect.origin.x/textureSize.width, y: textureRect.origin.y/textureSize.height, width: textureRect.size.width/textureSize.width, height: textureRect.size.height/textureSize.height)
-                let jiguangTexture = SKTexture(rect: newFrame, in: _jiguangTexture)
-                textureList.append(jiguangTexture)
-            }
-        }
+        let textureList = WARResourcesManager.sharedManager.fetchTextureList(name: name_jiguangPlist)
         
         let bullet = SKSpriteNode(texture: textureList.first)
-        bullet.position = CGPoint(x: 0, y: self.size.height/2 + textureSize.height/2)
+        bullet.position = CGPoint(x: 0, y: self.size.height/2 + (textureList.first?.size().height)!/2)
         addChild(bullet)
         
         let action = SKAction.animate(with: textureList, timePerFrame: 0.1)
@@ -237,13 +187,23 @@ class WARPlayerPlaneNode: SKSpriteNode {
             bullet.move(type: .player)
         }
     }
-    
-    //MARK: Public Methods
+}
+
+//MARK: Public Methods
+extension WARPlayerPlaneNode {
     /// 掉血
-    ///
-    /// - Parameter damage: 伤害值
     func subBlood(damage: Int) {
         currentBlood -= damage
     }
-
+    
+    func showCrust() {
+        let crustTextureList = WARResourcesManager.sharedManager.fetchTextureList(name: name_baohuke1Plist)
+        
+        let crustNode = SKSpriteNode(texture: crustTextureList.first!)
+        crustNode.position = CGPoint.zero//CGPoint(x: self.size.width/2, y: self.size.height/2)
+        addChild(crustNode)
+        
+        let action = SKAction.animate(with: crustTextureList, timePerFrame: 1)
+        crustNode.run(SKAction.repeat(action, count: 50))
+    }
 }

@@ -28,6 +28,7 @@ extension SKNode {
         //  物理属性
         physicsBody = SKPhysicsBody(rectangleOf: self.frame.size)
         physicsBody?.allowsRotation = false
+//        physicsBody?.isDynamic = false
         
         switch type {
         case .player:
@@ -39,13 +40,13 @@ extension SKNode {
             physicsBody?.categoryBitMask = BulletsWithEnemyBitMask
             physicsBody?.collisionBitMask = PlayerBitMask
             physicsBody?.contactTestBitMask = PlayerBitMask
-            zRotation = CGFloat(M_PI)
+            zRotation = CGFloat(Double.pi)
             break
         case .boss:
             physicsBody?.categoryBitMask = BulletsWithEnemyBitMask
             physicsBody?.collisionBitMask = PlayerBitMask
             physicsBody?.contactTestBitMask = PlayerBitMask
-            zRotation = CGFloat(M_PI)
+            zRotation = CGFloat(Double.pi)
             break
         }
     }

@@ -11,13 +11,13 @@ import SpriteKit
 class WARPlaneSpriteNode: SKSpriteNode {
     
     /// 初始血量
-    var originBlood: Int = 0
+    var originBlood: Int = 1
     /// 当前血量
     var currentBlood: Int = 1
     /// 敌机纹理
-    fileprivate let _enemysTexture = SKTexture(image: #imageLiteral(resourceName: "plan1"))
+    fileprivate let _enemysTexture = WARResourcesManager.sharedManager.fetchTexture(name: key_plane1)
     /// 子弹
-    fileprivate let _bulletsTexture = SKTexture(image: #imageLiteral(resourceName: "bullets"))
+    fileprivate let _bulletsTexture = WARResourcesManager.sharedManager.fetchTexture(name: key_bullets)
     
     /// 血条
     fileprivate let _bloodNode = SKSpriteNode(color: SKColor.red, size: CGSize.zero)
@@ -34,7 +34,7 @@ class WARPlaneSpriteNode: SKSpriteNode {
         //  随机位置
         let x_position = arc4random()%UInt32(ScreenSize.width-size.width) + UInt32(size.width/2)
         position = CGPoint(x: CGFloat(x_position), y: ScreenSize.height-size.height)
-        zRotation = CGFloat(M_PI)
+        zRotation = CGFloat(Double.pi)
         name = EnemyNodeName
         
         //  物理属性
@@ -47,7 +47,6 @@ class WARPlaneSpriteNode: SKSpriteNode {
         anchorPoint = CGPoint(x: 0.5, y: 0)
         
         _prepareBloodNode()
-        
         _shootBullet()
     }
     
@@ -57,7 +56,7 @@ class WARPlaneSpriteNode: SKSpriteNode {
         originBlood = blood
        
         self.position = position
-        zRotation = CGFloat(M_PI)
+        zRotation = CGFloat(Double.pi)
         name = EnemyNodeName
         
         //  物理属性
@@ -66,6 +65,7 @@ class WARPlaneSpriteNode: SKSpriteNode {
         physicsBody?.collisionBitMask = BulletsBitMask
         physicsBody?.contactTestBitMask = BulletsBitMask
         physicsBody?.allowsRotation = false
+        physicsBody?.isDynamic = false
 
         _prepareBloodNode()
     }
@@ -83,17 +83,35 @@ class WARPlaneSpriteNode: SKSpriteNode {
         _bloodNode.size = bloodBGNode.size
         _bloodNode.position = CGPoint.zero
         bloodBGNode.addChild(_bloodNode)
-        
     }
-    
-    //MARK: Shoot Bullet
+}
+
+// MARK: - Public - Methods
+extension WARPlaneSpriteNode {
+    /// 掉血
+    func subBlood() {
+        currentBlood = currentBlood - 1
+        
+        _bloodNode.xScale = CGFloat(currentBlood)/CGFloat(originBlood)
+        _bloodNode.position = CGPoint(x: (1-_bloodNode.xScale)*size.width/2, y: 0)
+        
+        if currentBlood == 0 {
+            WARScoreManager.sharedManager().addScore(score: originBlood * 100)
+            removeFromParent()
+        }
+    }
+}
+
+// MARK: - Private - Methods
+extension WARPlaneSpriteNode {
+    /// 发射子弹
     fileprivate func _shootBullet() {
         
         let waitShootAction = SKAction.wait(forDuration: 1)
         let creatAction = SKAction.run {
             self._creatEnemyBullets()
         }
-      
+        
         self.run(SKAction.repeatForever(SKAction.sequence([waitShootAction, creatAction])))
     }
     
@@ -101,7 +119,7 @@ class WARPlaneSpriteNode: SKSpriteNode {
     fileprivate func _creatEnemyBullets() {
         let bullet = SKSpriteNode(color: SKColor.white, size: CGSize(width: 5, height: 5))//SKSpriteNode(texture: _bulletsTexture)
         bullet.position = CGPoint(x: position.x, y: position.y - size.height/2 - bullet.size.height)
-        bullet.zRotation = CGFloat(M_PI)
+        bullet.zRotation = CGFloat(Double.pi)
         self.parent?.addChild(bullet)
         
         //  物理属性
@@ -118,22 +136,5 @@ class WARPlaneSpriteNode: SKSpriteNode {
         
         bullet.run(SKAction.sequence([moveDown, done]))
     }
-    
-    //MARK: Public Methods
-    
-    /// 掉血
-    func subBlood() {
-        currentBlood = currentBlood - 1
-        
-        _bloodNode.xScale = CGFloat(currentBlood)/CGFloat(originBlood)
-        _bloodNode.position = CGPoint(x: (1-_bloodNode.xScale)*size.width/2, y: 0)
-        
-        if currentBlood == 0 {
-            WARScoreManager.sharedManager().addScore(score: 100)
-            removeFromParent()
-        }
-    }
-    
-    
-    
+
 }

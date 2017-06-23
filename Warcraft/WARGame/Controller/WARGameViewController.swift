@@ -30,6 +30,9 @@ class WARGameViewController: UIViewController, SKPhysicsContactDelegate {
     /// 血量
     fileprivate let _bloodLabel = SKLabelNode(text: "0")
     
+    /// 保护壳按钮
+    fileprivate let _crustButton = UIButton(type: .custom)
+    
     /// 缓存触摸开始的点
     var _touchBeganPoint = CGPoint.zero
     /// 缓存玩家最开始的点  每次移动结束都会更新
@@ -48,11 +51,9 @@ class WARGameViewController: UIViewController, SKPhysicsContactDelegate {
         //  放置普通敌机
         _putEnemys()
         //  放置队列敌机
-//        WAREnemysEmitter.sharedInstance.pushEnemy(gameScene: _gameScene)
-        
-        let boss1 = WARBoss1Node()
-        _gameScene.addChild(boss1)
-        boss1.show()
+        WAREnemysEmitter.sharedInstance.pushEnemy(gameScene: _gameScene)
+        //  boss
+        _putBossEnemy()
     }
     
     //MARK: Prepare
@@ -94,6 +95,12 @@ class WARGameViewController: UIViewController, SKPhysicsContactDelegate {
         _bloodLabel.horizontalAlignmentMode = .left
         _bloodLabel.text = "血量:\(_playerNode.currentBlood)"
         _gameScene.addChild(_bloodLabel)
+        
+        /// 保护壳按钮
+        _crustButton.backgroundColor = SKColor.blue
+        _crustButton.frame = CGRect(x: 0, y: Screen_Height - 80, width: 50, height: 50)
+        _crustButton.addTarget(self, action: #selector(_crustButtonAction), for: .touchUpInside)
+        _gameView.addSubview(_crustButton)
     }
     
     /// 放置敌机
@@ -104,6 +111,13 @@ class WARGameViewController: UIViewController, SKPhysicsContactDelegate {
         }
         let waitePut = SKAction.wait(forDuration: 2)
         _gameScene.run(SKAction.repeatForever(SKAction.sequence([creatEnemy, waitePut])))
+    }
+    
+    /// 放置boss敌机
+    fileprivate func _putBossEnemy() {
+        let boss1 = WARBoss1Node(blood: 2000)
+        _gameScene.addChild(boss1)
+        boss1.show()
     }
     
     /// 创建敌机
@@ -119,8 +133,10 @@ class WARGameViewController: UIViewController, SKPhysicsContactDelegate {
         }
         enemyNode.run(SKAction.sequence([actionMove, actionDone]))
     }
-    
-    //MARK: Touch Delegate
+}
+
+//MARK: Touch Delegate
+extension WARGameViewController {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         if let touche = touches.first {
             //  保存 初始点击位置
@@ -150,8 +166,10 @@ class WARGameViewController: UIViewController, SKPhysicsContactDelegate {
         //  更新玩家位置
         _playerBeganPoint = _playerNode.position
     }
-    
-    //MARK: Contact Delegate
+}
+
+//MARK: 处理碰撞
+extension WARGameViewController {
     
     /// 碰撞开始
     ///
@@ -179,8 +197,12 @@ class WARGameViewController: UIViewController, SKPhysicsContactDelegate {
     ///
     /// - Parameter body: 玩家子弹击中的物体
     fileprivate func updateEnemyAfterContact(body: SKPhysicsBody) {
-        if body.categoryBitMask == EnemyBitMask, let enemyNode: WARPlaneSpriteNode = body.node as? WARPlaneSpriteNode {
-            enemyNode.subBlood()
+        if body.categoryBitMask == EnemyBitMask {
+            if let enemyNode: WARPlaneSpriteNode = body.node as? WARPlaneSpriteNode {
+                enemyNode.subBlood()
+            } else if let enemyNode = body.node as? WARBoss1Node {
+                enemyNode.subBlood()
+            }
             _scoreLabel.text = "得分:\(WARScoreManager.sharedManager().currentScore)"
         }
     }
@@ -197,9 +219,16 @@ class WARGameViewController: UIViewController, SKPhysicsContactDelegate {
     }
 }
 
-// MARK: - Scene - Delegate
+// MARK: - 场景更新
 extension WARGameViewController: SKSceneDelegate {
     func update(_ currentTime: TimeInterval, for scene: SKScene) {
         _backgroundNode.update()
+    }
+}
+
+// MARK: - 按钮方法
+extension WARGameViewController {
+    @objc fileprivate func _crustButtonAction() {
+        _playerNode.showCrust()
     }
 }

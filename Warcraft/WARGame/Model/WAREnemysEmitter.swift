@@ -11,9 +11,7 @@ import SpriteKit
 
 class WAREnemysEmitter:NSObject {
     
-    static let sharedInstance = WAREnemysEmitter()
-    fileprivate let _enemyTexture = SKTexture(image: #imageLiteral(resourceName: "plane3"))
-    
+    static let sharedInstance = WAREnemysEmitter()    
     
     func pushEnemy(gameScene: SKScene) {
         let creatEnemy = SKAction.run {
