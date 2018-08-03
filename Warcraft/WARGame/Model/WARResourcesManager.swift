@@ -83,11 +83,11 @@ class WARResourcesManager: NSObject {
         for textureFrameValue in textureFrameList {
             if let frameString: String = textureFrameValue as? String {
                 var textureRect = CGRectFromString(frameString)
-//                textureRect.origin.x = textureRect.origin.x/2   //  因为分辨率愿意，单位像素 = pixel／2
-//                textureRect.origin.y = textureRect.origin.y/2
-//                textureRect.size.width = textureRect.size.width/2
-//                textureRect.size.height = textureRect.size.height/2
-//                let newFrame = CGRect(x: textureRect.origin.x/textureSize.width, y: textureRect.origin.y/textureSize.height, width: textureRect.size.width/textureSize.width, height: textureRect.size.height/textureSize.height)
+                textureRect.origin.x = textureRect.origin.x/2   //  因为分辨率，单位像素 = pixel／2
+                textureRect.origin.y = textureRect.origin.y/2
+                textureRect.size.width = textureRect.size.width/2
+                textureRect.size.height = textureRect.size.height/2
+                let newFrame = CGRect(x: textureRect.origin.x/textureSize.width, y: textureRect.origin.y/textureSize.height, width: textureRect.size.width/textureSize.width, height: textureRect.size.height/textureSize.height)
                 
                 let oneTexture = SKTexture(rect: textureRect, in: allTexture)
                 textureList.append(oneTexture)

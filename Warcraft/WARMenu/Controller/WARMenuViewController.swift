@@ -24,7 +24,7 @@ class WARMenuViewController: UIViewController {
         view.addSubview(startButton)
     }
     
-    func startButtonAction() {
+    @objc func startButtonAction() {
         WARResourcesManager.sharedManager.loadTexture()
         
         let gameVC = WARGameViewController()
